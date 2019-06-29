@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤器、指令、事件、语法糖</title>
+    <style>
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div>1. 实现页面中显示当前时间</div>
+    <div id="app">
+        <!-- formateDateTime是过滤器，用于格式化nowTime,nowTime是formateDateTime的第一个参数 -->
+        <div>当前时间：{{nowTime | formateDateTime}}</div>
+        <!-- formateDateTime还可以传参，nowTime为第一个参数，hahaha为第二个参数，hehehe为第三个参数 -->
+        <div>当前时间：{{nowTime | formateDateTime2("hahaha","hehehe")}}</div>
+        <!-- v-text解析文本，作用和{{}}一样 -->
+        <span v-text="textValue"></span><br>
+        <!-- v-text解析html -->
+        <span v-html="textValue"></span><br>
+        <!-- v-bind动态更新html元素上的属性 -->
+        <span v-bind:class="className">v-bind</span><br>
+        <!-- v-on绑定事件 -->
+        <button v-on:click="addOne">{{num}}</button>
+        <!-- v-on的语法糖@ -->
+        <button @click="addOne">{{num}}</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        function setNum(value) {
+            if (value < 10) {
+                return "0" + value;
+            } else {
+                return value;
+            }
+        }
+        var app = new Vue({
+            el: "#app",
+            data: {
+                nowTime: new Date(),
+                textValue: "<span>我是span</span>",
+                className: "red",
+                num: 1
+            },
+            filters: {
+                formateDateTime: function (value) {
+                    var date = new Date(value);
+                    var year = date.getFullYear();
+                    var month = setNum(date.getMonth() + 1);
+                    var day = setNum(date.getDate());
+                    var hour = setNum(date.getHours());
+                    var minute = setNum(date.getMinutes());
+                    var second = setNum(date.getSeconds());
+                    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second
+                },
+                formateDateTime2: function (value, param1, param2) {
+                    var date = new Date(value);
+                    var year = date.getFullYear();
+                    var month = setNum(date.getMonth() + 1);
+                    var day = setNum(date.getDate());
+                    var hour = setNum(date.getHours());
+                    var minute = setNum(date.getMinutes());
+                    var second = setNum(date.getSeconds());
+                    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second + " " +
+                        param1 + " " + param2;
+                }
+            },
+            mounted: function () {
+                var that = this;
+                that.timer = setInterval(function () {
+                    that.nowTime = new Date();
+                }, 1000);
+            },
+            beforeDestroy: function () {
+                clearInterval(this.timer);
+            },
+            methods: {
+                addOne: function () {
+                    this.num += 1;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

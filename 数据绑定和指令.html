@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue练习</title>
+</head>
+
+<body>
+    <div id="app">
+        {{msg}}<Br>
+        {{msg?"aa":"bb"}}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                msg: "冯方圆 前端工程师"
+            },
+            created: function () {
+                alert("创建实例了，但是还没有挂载");
+            },
+            mounted: function () {
+                alert("挂载完成");
+            }
+        });
+
+        // 访问元素和属性
+        console.log(app.$el);
+        console.log(app.$data);
+        console.log(app.msg);
+    </script>
+</body>
+
+</html>
